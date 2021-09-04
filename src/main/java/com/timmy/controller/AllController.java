@@ -84,7 +84,7 @@ public class AllController extends ControllerBase {
     
 	
 	
-	/*获取所有考勤机*/
+	/*èŽ·å�–æ‰€æœ‰è€ƒå‹¤æœº*/
 	@ResponseBody
 	@RequestMapping(value="/device",method=RequestMethod.GET)
 	public Msg getAllDevice() {				
@@ -92,7 +92,7 @@ public class AllController extends ControllerBase {
 		return Msg.success().add("device", deviceList);
 	}
 	
-	/*获取所有考勤机*/
+	/*èŽ·å�–æ‰€æœ‰è€ƒå‹¤æœº*/
 	@ResponseBody
 	@RequestMapping(value="/enrollInfo",method=RequestMethod.GET)
 	public Msg getAllEnrollInfo() {				
@@ -102,7 +102,7 @@ public class AllController extends ControllerBase {
 	}
 	
 	
-	/*采集所有的用户*/
+	/*é‡‡é›†æ‰€æœ‰çš„ç”¨æˆ·*/
 	@ResponseBody
     @RequestMapping(value="/sendWs",method = RequestMethod.GET)
     public Msg sendWs(@RequestParam("deviceSn")String deviceSn) {
@@ -134,8 +134,8 @@ public class AllController extends ControllerBase {
 	@RequestMapping(value="addPerson",method=RequestMethod.POST)
 	public Msg addPerson(PersonTemp personTemp,MultipartFile pic,HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws Exception {
 		String path="C:/dynamicface/picture/";
-	    System.out.println("图片真实路径"+path);
-	    System.out.println("新增人员信息==================="+personTemp);
+	    System.out.println("å›¾ç‰‡çœŸå®žè·¯å¾„"+path);
+	    System.out.println("æ–°å¢žäººå‘˜ä¿¡æ�¯==================="+personTemp);
 	    String photoName="";
 	    String newName="";
 	 //   EnrollInfo enrollInfo=new EnrollInfo();
@@ -183,7 +183,7 @@ public class AllController extends ControllerBase {
 	    	String base64Str=ImageProcess.imageToBase64Str("C:/dynamicface/picture/"+newName);
 	    	enrollInfoTemp.setImagePath(newName);
 	    	enrollInfoTemp.setSignatures(base64Str);
-	    	System.out.println("图片数据长度"+base64Str.length());
+	    	System.out.println("å›¾ç‰‡æ•°æ�®é•¿åº¦"+base64Str.length());
 	    	enrollInfoService.insertSelective(enrollInfoTemp);
 	    }
 	
@@ -196,7 +196,7 @@ public class AllController extends ControllerBase {
 	@ResponseBody
 	@RequestMapping(value="getUserInfo",method=RequestMethod.GET)
 	public Msg getUserInfo(@RequestParam("deviceSn")String deviceSn) {
-		System.out.println("进入controller");
+		System.out.println("è¿›å…¥controller");
 		List<Person>person=personService.selectAll();
 		List<EnrollInfo>enrollsPrepared=new ArrayList<EnrollInfo>();
         for (int i = 0; i < person.size(); i++) {
@@ -208,14 +208,14 @@ public class AllController extends ControllerBase {
 			}
 			}
 		}
-        System.out.println("采集用户数据"+enrollInfoService);
+        System.out.println("é‡‡é›†ç”¨æˆ·æ•°æ�®"+enrollInfoService);
         personService.getSignature2(enrollsPrepared, deviceSn);
         
 		return  Msg.success();
 	}
 	
 	
-	/*获取单个用户*/
+	/*èŽ·å�–å�•ä¸ªç”¨æˆ·*/
 	@ResponseBody
     @RequestMapping("sendGetUserInfo")
     public Msg sendGetUserInfo(@RequestParam("enrollId")int enrollId,@RequestParam("backupNum")int backupNum,@RequestParam("deviceSn")String deviceSn) {
@@ -223,7 +223,7 @@ public class AllController extends ControllerBase {
 		
 		
 		List<Device>deviceList=deviceService.findAllDevice();
-		System.out.println("设备信息"+deviceList);
+		System.out.println("è®¾å¤‡ä¿¡æ�¯"+deviceList);
 		
 		String message="{\"cmd\":\"getuserinfo\",\"enrollid\":"+enrollId+",\"backupnum\":"+ backupNum+"}";
 		
@@ -233,7 +233,7 @@ public class AllController extends ControllerBase {
 		return Msg.success();
     }
 	
-/*	下发所有用户，面向选中考勤机*/
+/*	ä¸‹å�‘æ‰€æœ‰ç”¨æˆ·ï¼Œé�¢å�‘é€‰ä¸­è€ƒå‹¤æœº*/
 	@ResponseBody
 	@RequestMapping(value="/setPersonToDevice",method = RequestMethod.GET)
 	public Msg sendSetUserInfo(@RequestParam("deviceSn")String deviceSn){
@@ -274,7 +274,7 @@ public class AllController extends ControllerBase {
 	
 	
 	
-	/*下发单个用户到机器，对选中考勤机*/
+	/*ä¸‹å�‘å�•ä¸ªç”¨æˆ·åˆ°æœºå™¨ï¼Œå¯¹é€‰ä¸­è€ƒå‹¤æœº*/
 	@ResponseBody
 	@RequestMapping(value="/setOneUser",method = RequestMethod.GET)
 	public Msg setOneUserTo(@RequestParam("enrollId")int enrollId,@RequestParam("backupNum")int backupNum,@RequestParam("deviceSn")String deviceSn) {
@@ -292,27 +292,27 @@ public class AllController extends ControllerBase {
 		
 	}
 	
-	/*从考勤机删除用户*/
+	/*ä»Žè€ƒå‹¤æœºåˆ é™¤ç”¨æˆ·*/
 	@ResponseBody
 	@RequestMapping(value="/deletePersonFromDevice",method = RequestMethod.GET)
 	public Msg deleteDeviceUserInfo(@RequestParam("enrollId")int enrollId,@RequestParam("deviceSn")String deviceSn){	
 		
-		System.out.println("删除用户devicesn==================="+deviceSn);
+		System.out.println("åˆ é™¤ç”¨æˆ·devicesn==================="+deviceSn);
 		personService.deleteUserInfoFromDevice(enrollId, deviceSn);
 	//	personService.deleteByPrimaryKey(enrollId);
 		return Msg.success();
 	}
 	
 	
-	/*初始化考勤机*/
+	/*åˆ�å§‹åŒ–è€ƒå‹¤æœº*/
 	@ResponseBody
 	@RequestMapping(value="/initSystem",method = RequestMethod.GET)
 	public Msg initSystem(@RequestParam("deviceSn")String deviceSn) {
-		System.out.println("初始化请求");
+		System.out.println("åˆ�å§‹åŒ–è¯·æ±‚");
 		String  message="{\"cmd\":\"enabledevice\"}";
 		String  message2="{\"cmd\":\"settime\",\"cloudtime\":\"2020-12-23 13:49:30\"}";
 		String s4="{\"cmd\":\"settime\",\"cloudtime\":\"2016-03-25 13:49:30\"}";
-		String s2="{\"cmd\":\"setdevinfo\",\"deviceid\":1,\"language\":15,\"volume\":0,\"screensaver\":0,\"verifymode\":0,\"sleep\":0,\"userfpnum\":3,\"loghint\":1000,\"reverifytime\":0}";
+		String s2="{\"cmd\":\"setdevinfo\",\"deviceid\":1,\"language\":0,\"volume\":0,\"screensaver\":0,\"verifymode\":0,\"sleep\":0,\"userfpnum\":3,\"loghint\":1000,\"reverifytime\":0}";
 		String s3="{\"cmd\":\"setdevlock\",\"opendelay\":5,\"doorsensor\":0,\"alarmdelay\":0,\"threat\":0,\"InputAlarm\":0,\"antpass\":0,\"interlock\":0,\"mutiopen\":0,\"tryalarm\":0,\"tamper\":0,\"wgformat\":0,\"wgoutput\":0,\"cardoutput\":0,\"dayzone\":[{\"day\":[{\"section\":\"01:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"}]},{\"day\":[{\"section\":\"02:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"}]},{\"day\":[{\"section\":\"03:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"}]},{\"day\":[{\"section\":\"04:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"}]},{\"day\":[{\"section\":\"05:00~00:0\n" + 
 				"0\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"}]},{\"day\":[{\"section\":\"06:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"}]},{\"day\":[{\"section\":\"07:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"}]},{\"day\":[{\"section\":\"08:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"},{\"section\":\"00:00~00:00\"}]}],\"weekzone\":[{\"week\":[{\"day\":0},{\"day\":1},{\"day\":2},{\"day\":3},{\"day\":4},{\"day\":5},{\"day\":6}]},{\"week\":[{\"day\":10},{\"day\":11},{\"day\":12},{\"day\":13},{\"day\":14},{\"day\":15},{\"day\":16}]},{\"week\":[{\"day\":20},{\"day\":21},{\"day\":22},{\"day\":23},{\"day\":24},{\"day\":25},{\"day\":26}]},\n" + 
 				"{\"week\":[{\"day\":30},{\"day\":31},{\"day\":32},{\"day\":33},{\"day\":34},{\"day\":35},{\"day\":36}]},{\"week\":[{\"day\":40},{\"day\":41},{\"day\":42},{\"day\":43},{\"day\":44},{\"day\":45},{\"day\":46}]},{\"week\":[{\"day\":50},{\"day\":51},{\"day\":52},{\"day\":53},{\"day\":54},{\"day\":55},{\"day\":56}]},{\"week\":[{\"day\":60},{\"day\":61},{\"day\":62},{\"day\":63},{\"day\":64},{\"day\":65},{\"day\":66}]},{\"week\":[{\"day\":70},{\"day\":71},{\"day\":72},{\"day\":73},{\"day\":74},{\"day\":75},{\"day\":76}]}],\"lockgroup\":[{\"group\":0},{\"group\":1},{\"group\":2},{\"group\":3},{\"group\":4}],\"nopentime\":[{\"day\":0},{\"day\":0},{\"day\":0},{\"day\":0},{\"day\":0},{\"day\":0},{\"day\":0}]}\n" + 
@@ -340,7 +340,7 @@ public class AllController extends ControllerBase {
 	}
 	
 	
-	/*采集所有的考勤记录，面向所有机器*/
+	/*é‡‡é›†æ‰€æœ‰çš„è€ƒå‹¤è®°å½•ï¼Œé�¢å�‘æ‰€æœ‰æœºå™¨*/
 	@ResponseBody
 	@RequestMapping(value="/getAllLog",method = RequestMethod.GET)
 	public Msg getAllLog(@RequestParam("deviceSn")String deviceSn) {	
@@ -362,7 +362,7 @@ public class AllController extends ControllerBase {
 		
 	}
 	
-	/*采集所有的考勤记录，面向所有机器*/
+	/*é‡‡é›†æ‰€æœ‰çš„è€ƒå‹¤è®°å½•ï¼Œé�¢å�‘æ‰€æœ‰æœºå™¨*/
 	@ResponseBody
 	@RequestMapping(value="/getNewLog",method = RequestMethod.GET)
 	public Msg getNewLog(@RequestParam("deviceSn")String deviceSn) {	
@@ -385,7 +385,7 @@ public class AllController extends ControllerBase {
 		
 	}
 	
-	/*添加天时段,面向全部考勤机*/
+	/*æ·»åŠ å¤©æ—¶æ®µ,é�¢å�‘å…¨éƒ¨è€ƒå‹¤æœº*/
 	@ResponseBody
 	@RequestMapping(value="/setAccessDay",method = RequestMethod.POST)
 	public Msg setAccessDay(@ModelAttribute AccessDay accessDay) {
@@ -399,7 +399,7 @@ public class AllController extends ControllerBase {
 	}
 	
 	
-	/*添加周时段，面向全部考勤机*/
+	/*æ·»åŠ å‘¨æ—¶æ®µï¼Œé�¢å�‘å…¨éƒ¨è€ƒå‹¤æœº*/
 	@ResponseBody
 	@RequestMapping(value="/setAccessWeek",method = RequestMethod.POST)
 	public Msg setAccessWeek(@ModelAttribute AccessWeek accessWeek) {	
@@ -414,7 +414,7 @@ public class AllController extends ControllerBase {
 	}
 	
 	
-	/*设置锁组合*/
+	/*è®¾ç½®é”�ç»„å�ˆ*/
 	@ResponseBody
 	@RequestMapping(value="/setLocckGroup",method = RequestMethod.POST)
 	public Msg setLockGroup(@ModelAttribute LockGroup lockGroup) {		
@@ -422,23 +422,23 @@ public class AllController extends ControllerBase {
 		return Msg.success();
 	}
 	
-	/*设置用户锁权限*/
+	/*è®¾ç½®ç”¨æˆ·é”�æ�ƒé™�*/
 	@ResponseBody
 	@RequestMapping(value="/setUserLock",method=RequestMethod.POST)
 	public Msg setUserLock(@ModelAttribute UserLock userLock) {
-		System.out.println("用户权限"+userLock);
+		System.out.println("ç”¨æˆ·æ�ƒé™�"+userLock);
 		userLockService.setUserLock(userLock, "2019-06-06 00:00:00", "2099-03-25 00:00:00");
 		return Msg.success();
 	}
 	
 	
-	/*显示员工列表*/
+	/*æ˜¾ç¤ºå‘˜å·¥åˆ—è¡¨*/
 	@RequestMapping(value="/emps")
 	@ResponseBody
 	public Msg getAllPersonFromDB(@RequestParam(value="pn",defaultValue="1") Integer pn) {
-		// 引入 PageHelper 分页插件
+		// å¼•å…¥ PageHelper åˆ†é¡µæ�’ä»¶
 				/**
-				 * 在查询之前只需要调用，传入要显示的页码，以及每页显示的数量 startPage 后紧跟的查询就是分页查询
+				 * åœ¨æŸ¥è¯¢ä¹‹å‰�å�ªéœ€è¦�è°ƒç”¨ï¼Œä¼ å…¥è¦�æ˜¾ç¤ºçš„é¡µç �ï¼Œä»¥å�Šæ¯�é¡µæ˜¾ç¤ºçš„æ•°é‡� startPage å�Žç´§è·Ÿçš„æŸ¥è¯¢å°±æ˜¯åˆ†é¡µæŸ¥è¯¢
 				 */
 	//	PageHelper.startPage(pn, 8);
 		List<Person>personList=personService.selectAll();
@@ -460,7 +460,7 @@ public class AllController extends ControllerBase {
 			emps.add(userInfo);
 		}
 		PageHelper.startPage(pn, emps.size());
-		System.out.println("用户数量"+personList.size());
+		System.out.println("ç”¨æˆ·æ•°é‡�"+personList.size());
 		PageInfo page= new PageInfo(emps,5);
 		
 		return Msg.success().add("pageInfo", page);
@@ -472,7 +472,7 @@ public class AllController extends ControllerBase {
 
 	
 	
-	/*显示所有的打卡记录*/
+	/*æ˜¾ç¤ºæ‰€æœ‰çš„æ‰“å�¡è®°å½•*/
 	@RequestMapping(value="/records")
 	@ResponseBody
 	public Msg getAllLogFromDB(@RequestParam(value="pn",defaultValue="1") Integer pn){
@@ -488,7 +488,7 @@ public class AllController extends ControllerBase {
 	
 	
 	
-	/*设置周时间段*/
+	/*è®¾ç½®å‘¨æ—¶é—´æ®µ*/
 	@RequestMapping(value="/accessDays",method = RequestMethod.GET)
 	@ResponseBody
 	public Msg getAccessDayFromDB() {

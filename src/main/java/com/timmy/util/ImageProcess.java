@@ -17,6 +17,9 @@ import com.timmy.mapper.EnrollInfoMapper;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
+
+import org.apache.commons.codec.binary.Base64;
+
 public class  ImageProcess {
 
 	@Autowired
@@ -28,14 +31,15 @@ public class  ImageProcess {
 		 * SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); String
 		 * subPath = dateFormat.format(now);
 		 */
-	        String imagePath = "C:/dynamicface/picture/";
+	        // String imagePath = "C:/dynamicface/picture/";
+	        String imagePath = "C:/LexusTech/student_picture/";
 	        String file = picName + ".jpg";
 	        System.out.println("图片路径" + imagePath + file);
 	        File file2 = new File(imagePath + file);
 	        if (base64String == null) {
 	            return false;
 	        } else {
-	            BASE64Decoder decoder = new BASE64Decoder();
+	            // BASE64Decoder decoder = new BASE64Decoder();
 
 	            try {
 	                if (!file2.exists()) {
@@ -43,18 +47,24 @@ public class  ImageProcess {
 	                    file2.createNewFile();
 	                }
 
-	                byte[] b = decoder.decodeBuffer(base64String);
+	                /*byte[] b = decoder.decodeBuffer(base64String);
 
 	                for(int i = 0; i < b.length; ++i) {
 	                    if (b[i] < 0) {
 	                        b[i] = (byte)(b[i] + 256);
 	                    }
-	                }
+	                }*/
+	                
+	                FileOutputStream fos = new FileOutputStream(imagePath + file); //change path of image according to you
+	                byte[] byteArray = Base64.decodeBase64(base64String);
+	                System.out.println("\nImg:" + byteArray);
+	                fos.write(byteArray);
+	                fos.close();
 
-	                OutputStream out = new FileOutputStream(file2);
+	                /* OutputStream out = new FileOutputStream(file2);
 	                out.write(b);
 	                out.flush();
-	                out.close();
+	                out.close();*/
 	                return true;
 	            } catch (Exception e) {
 	                e.printStackTrace();

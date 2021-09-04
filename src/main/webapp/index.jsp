@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>员工列表</title>
+<!--<title>员工列表</title>-->
+<title>Attendance System</title>
 <%
 	pageContext.setAttribute("APP_PATH",request.getContextPath());
 %>
@@ -738,7 +739,8 @@
 				var numTd = $("<td></td>").append(i++);
 				var empIdTd = $("<td></td>").append(item.enrollId);
 				var empNameTd = $("<td></td>").append(item.name);
-				var empImageTd = $("<td></td>").append( "<img style='width:60px; height:60px;' src='"+"${APP_PATH}/img/"+item.imagePath+"'/>");
+				//var empImageTd = $("<td></td>").append( "<img style='width:60px; height:60px;' src='"+"${APP_PATH}/img/"+item.imagePath+"'/>");
+				var empImageTd = $("<td></td>").append( "<img style='width:60px; height:60px;' src='"+ "https://webapp.lexustechng.com/school/api_v1/images/" +item.imagePath+"'/>");
 				var rollId = $("<td></td>").append("General Staff");
 				
 				var uploadBtu = $("<button></button>").addClass("btn btn-info btn-sm upload_btu")
